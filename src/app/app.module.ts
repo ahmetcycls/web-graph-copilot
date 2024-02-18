@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { AppComponent } from './app.component';
-// Import the DashboardModule
-import { DashboardModule } from './project-dashboard/dashboard.module';
+import { DashboardModule } from './features/project-dashboard/dashboard.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent
-    // Remove the ProjectDashboardComponent, GraphViewComponent, and ChatComponent from declarations
+    // Other component declarations
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    DashboardModule // Correctly import the DashboardModule
+    HttpClientModule, // Add HttpClientModule here
+    DashboardModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
