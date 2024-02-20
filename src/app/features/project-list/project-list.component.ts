@@ -21,6 +21,16 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
+  // Inside ProjectListComponent class
+
+  onCreateNewProject(): void {
+    // Navigate to the project creation form or modal
+    // Example: this.router.navigate(['/projects/new']);
+    // Or open a modal dialog for creating a new project
+
+
+  }
+
   onSelectProject(projectNodeId: string): void {
     this.router.navigate(['/projects', projectNodeId]);
   }

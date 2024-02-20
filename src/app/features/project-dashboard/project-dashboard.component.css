@@ -1,0 +1,18 @@
+.dashboard-container {
+  position: relative;
+}
+
+.graph-view-component {
+  /* Adjust based on your layout needs */
+  width: 100%;
+  height: 100%;
+}
+
+.chat-component {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px; /* Adjust width as necessary */
+  height: 400px; /* Adjust height as necessary */
+  z-index: 10; /* Ensure it overlaps the graph component */
+}

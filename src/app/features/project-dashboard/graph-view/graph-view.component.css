@@ -1,0 +1,14 @@
+/* graph-view.component.css */
+
+.graph-container {
+  width: 100%;
+  height: 500px;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  transition: border-color 0.3s ease-in-out; /* Add a transition effect for color change */
+}
+
+.graph-container:hover {
+  border-color: #ff6b6b; /* Change border color on hover for a dynamic effect */
+}

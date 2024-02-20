@@ -1,25 +1,26 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'],
-  standalone: true,
+  styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
   @Input() projectNodeId: string;
-  messages: Array<{user: string, message: string}> = [];
+  @Input() chatMessages: any[]; // Assume a structure for your chat messages
+  newMessage: string = ''; // Declare newMessage property
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
-    // Initialize chat or load existing chat history based on projectNodeId
+    // Initialize chat based on projectNodeId, if necessary
+    // You might fetch initial chat messages here or listen for new messages
   }
 
-  sendMessage(message: string): void {
-    // Placeholder for sending a message. Implement interaction with your backend here.
-    this.messages.push({ user: 'User', message: message });
-    // Assume a response from the AI backend
-    this.messages.push({ user: 'AI', message: 'Response from AI based on your message' });
+  sendMessage(): void {
+    // Logic to send a new message
+    // This would likely involve emitting an event or calling a chat service that interacts with your backend
+    console.log(this.newMessage); // For testing purposes
+    this.newMessage = ''; // Clear the input field after sending the message
   }
 }

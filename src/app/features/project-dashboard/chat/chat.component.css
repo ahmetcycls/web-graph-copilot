@@ -1,0 +1,47 @@
+/* chat.component.css */
+
+/* Chat container styles */
+.chat-container {
+  position: fixed;
+  top: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #4CAF50;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  max-width: 600px;
+  min-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Message list styles */
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Individual message styles */
+.message {
+  margin-bottom: 15px; /* Reduced margin */
+  padding: 15px; /* Reduced padding */
+  background-color: #ffffff; /* Retained background color */
+  border-radius: 10px; /* Retained border-radius */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Retained box-shadow */
+}
+
+/* Message input styles */
+.message-input {
+  margin-top: 15px; /* Reduced margin */
+  padding: 15px; /* Reduced padding */
+  border: 3px solid #4CAF50; /* Retained border */
+  border-radius: 10px; /* Retained border-radius */
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.message-input:focus {
+  border-color: #007bff;
+}

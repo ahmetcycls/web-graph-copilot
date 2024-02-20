@@ -8,6 +8,7 @@ import { ProjectDashboardComponent } from './features/project-dashboard/project-
 const routes: Routes = [
   { path: '', redirectTo: '/projects', pathMatch: 'full' },
   { path: 'projects', component: ProjectListComponent },
+  { path: 'projects/:projectNodeId', component: ProjectDashboardComponent }
   // The ProjectDashboardComponent will include both the GraphViewComponent and ChatComponent
 ];
 
