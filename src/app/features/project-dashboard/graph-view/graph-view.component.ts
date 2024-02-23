@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Network, Node, Edge, DataSet } from 'vis-network/standalone';
 import { GraphDataService } from '../../../core/services/graph-data.service';
 import { NodeDetailService } from '../../../core/services/node-detail.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-graph-view',
@@ -17,22 +18,14 @@ export class GraphViewComponent implements OnInit {
   network?: Network;
 
   constructor(private graphDataService: GraphDataService,
-              private nodeDetailService: NodeDetailService
+              private nodeDetailService: NodeDetailService, private socket: Socket
   ) {}
 
   ngOnInit(): void {
-    this.graphDataService.getGraphData(this.projectNodeId).subscribe({
-      next: (data) => {
-        console.log(data)
-        this.nodes.clear();
-        this.edges.clear();
-        this.nodes.add(data.nodes);
-        this.edges.add(data.edges);
-        this.initializeOrUpdateGraph(); // Update the graph with fetched data
-      },
-      error: (err) => {
-        console.error('Failed to fetch graph data:', err);
-      }
+    this.fetchAndInitializeGraph();
+    this.socket.on('graph_update', (data) => {
+      this.fetchAndInitializeGraph();
+
     });
   }
 
@@ -44,13 +37,13 @@ export class GraphViewComponent implements OnInit {
     const container = this.graphContainer.nativeElement;
     const data = { nodes: this.nodes, edges: this.edges };
     const options = {
-      configure: {
-        enabled: true
-      },
+      // configure: {
+      //   enabled: true
+      // },
       layout: {
         hierarchical: {
-          improvedLayout:true,
-          randomSeed: 100,
+          // improvedLayout:true,
+          // randomSeed: 100,
           enabled: true,
           direction: 'UD', // 'UD' for Up-Down, 'LR' for Left-Right
           sortMethod: 'directed', // 'directed' for Directed, 'hubsize' for Hub size
@@ -82,7 +75,7 @@ export class GraphViewComponent implements OnInit {
         },
         heightConstraint: {
           minimum: 100,
-          maximum: 150,
+          // maximum: 150,
         },
         font: {
           size: 16,
@@ -110,6 +103,21 @@ export class GraphViewComponent implements OnInit {
         const nodeId = params.nodes[0]; // Get the ID of the clicked node
         const nodeData = this.nodes.get(nodeId); // Retrieve node data
         this.nodeDetailService.updateNodeDetail(nodeData); // Update the node detail using the service
+      }
+    });
+  }
+
+  private fetchAndInitializeGraph(): void {
+    this.graphDataService.getGraphData(this.projectNodeId).subscribe({
+      next: (data) => {
+        this.nodes.clear();
+        this.edges.clear();
+        this.nodes.add(data.nodes);
+        this.edges.add(data.edges);
+        this.initializeOrUpdateGraph(); // Re-initialize the graph with fetched data
+      },
+      error: (err) => {
+        console.error('Failed to fetch graph data:', err);
       }
     });
   }

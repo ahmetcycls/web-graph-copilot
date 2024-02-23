@@ -14,7 +14,6 @@ export class GraphDataService {
   constructor(private http: HttpClient) {}
 
   getGraphData(projectNodeId: string): Observable<any> {
-    console.log('projectNodeId', projectNodeId);
     const payload = {
       project_node_id: projectNodeId,
       user_id: "50" // Hardcoded as per your requirement

@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../../../core/services/chat.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-chat',
@@ -13,9 +14,15 @@ export class ChatComponent implements OnInit {
   isLoading: boolean = false; // Flag for loading indicator
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private socket: Socket) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.socket.on('ai_copilot_response', (data) => {
+      this.chatMessages = data.response;
+      this.isLoading = false;
+
+    });
+  }
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
@@ -28,30 +35,19 @@ export class ChatComponent implements OnInit {
 
       // Clear the input field immediately after hitting enter
       this.newMessage = '';
+      this.isLoading = true; // Show loading indicator
 
       // Push the user's message to chatMessages for immediate display
       this.chatMessages.push({ role: 'user', content: messageContent });
-
-      this.isLoading = true; // Show loading indicator
-
       // Prepare payload without the last input (user's message)
       const payload = {
-        input: messageContent,
-        user_id: "50",
-        project_node_id: this.projectNodeId,
-        // Send the history except the last message
-        history: this.chatMessages.slice(0, this.chatMessages.length - 1)
+          input: messageContent,
+          user_id: "50",
+          project_node_id: this.projectNodeId,
+          history: this.chatMessages.slice(0,- 1)
       };
-
-      this.chatService.sendMessage(payload).subscribe(response => {
-        // Update the chat history with the response from the backend
-        this.chatMessages = response.response.history;
-        this.isLoading = false; // Hide loading indicator
-        this.newMessage = ''; // Clear the message input field
-      }, error => {
-        console.error("Failed to send message:", error);
-        this.isLoading = false;
-      });
+      console.log(payload);
+      this.socket.emit('AI_copilot_message', payload);
     }
   }
 
