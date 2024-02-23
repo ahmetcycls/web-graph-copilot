@@ -1,11 +1,12 @@
 <div class="chat-container">
-  <!-- List of messages -->
-  <div class="messages">
-    <div *ngFor="let message of chatMessages" class="message">
-      {{ message.content }} <!-- Adjust according to your message structure -->
-    </div>
+  <div class="messages" #scrollMe>
+    <ng-container *ngFor="let message of chatMessages">
+      <div *ngIf="message.role === 'assistant' || message.role === 'user'" class="message">
+        {{ message.content }}
+      </div>
+    </ng-container>
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading">Loading...</div>
   </div>
-
-  <!-- Message input -->
   <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." class="message-input">
 </div>

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Network, Node, Edge, DataSet } from 'vis-network/standalone';
 import { GraphDataService } from '../../../core/services/graph-data.service';
+import { NodeDetailService } from '../../../core/services/node-detail.service';
 
 @Component({
   selector: 'app-graph-view',
@@ -15,7 +16,9 @@ export class GraphViewComponent implements OnInit {
   edges: DataSet<Edge> = new DataSet([]);
   network?: Network;
 
-  constructor(private graphDataService: GraphDataService) {}
+  constructor(private graphDataService: GraphDataService,
+              private nodeDetailService: NodeDetailService
+  ) {}
 
   ngOnInit(): void {
     this.graphDataService.getGraphData(this.projectNodeId).subscribe({
@@ -41,14 +44,19 @@ export class GraphViewComponent implements OnInit {
     const container = this.graphContainer.nativeElement;
     const data = { nodes: this.nodes, edges: this.edges };
     const options = {
+      configure: {
+        enabled: true
+      },
       layout: {
         hierarchical: {
-          randomSeed: 3,
+          improvedLayout:true,
+          randomSeed: 100,
           enabled: true,
           direction: 'UD', // 'UD' for Up-Down, 'LR' for Left-Right
-          sortMethod: 'hubsize', // 'directed' for Directed, 'hubsize' for Hub size
-          levelSeparation: 400,
-          nodeSpacing: 400,
+          sortMethod: 'directed', // 'directed' for Directed, 'hubsize' for Hub size
+          levelSeparation: 200,
+          nodeSpacing: 300,
+          shakeTowards: 'leaves'
         },
       },
       interaction: {
@@ -56,9 +64,15 @@ export class GraphViewComponent implements OnInit {
         dragNodes: true,
         dragView: true,
         zoomView: true,
+        navigationButtons: true,
       },
       physics: {
         enabled: false, // Disabling for static graphs
+      },
+      edges: {
+        arrows:{
+          to: true
+        }
       },
       nodes: {
         shape: 'box',
@@ -71,10 +85,14 @@ export class GraphViewComponent implements OnInit {
           maximum: 150,
         },
         font: {
-          size: 12,
+          size: 16,
           face: 'Arial',
           color: '#000000',
         },
+        color: {
+          border: '#FFFFFF', // Optional: Change border color to white for better contrast
+          background: '#333333', // Optional: Adjust node background for better visibility on black
+        }
         // Customize additional node properties if needed
       },
       // Include additional options as needed
@@ -87,5 +105,12 @@ export class GraphViewComponent implements OnInit {
       // Update the network with new data
       this.network.setData(data);
     }
+    this.network.on("click", params => {
+      if (params.nodes.length > 0) {
+        const nodeId = params.nodes[0]; // Get the ID of the clicked node
+        const nodeData = this.nodes.get(nodeId); // Retrieve node data
+        this.nodeDetailService.updateNodeDetail(nodeData); // Update the node detail using the service
+      }
+    });
   }
 }

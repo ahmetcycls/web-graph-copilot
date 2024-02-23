@@ -7,14 +7,15 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
 import { ProjectDashboardComponent } from './project-dashboard.component';
 import { ProjectListComponent } from '../project-list/project-list.component';
 import { GraphViewComponent } from './graph-view/graph-view.component';
-import { ChatComponent } from './chat/chat.component'; // Import ChatComponent here
-
+import { ChatComponent } from './chat/chat.component';
+import {NodeDetailComponent} from "./node-detail/node-detail.component"; // Import ChatComponent here
 @NgModule({
   declarations: [
     ProjectDashboardComponent,
     ProjectListComponent,
     GraphViewComponent,
-    ChatComponent // Declare ChatComponent here
+    ChatComponent, // Declare ChatComponent here,
+    NodeDetailComponent
   ],
   imports: [
     CommonModule,
