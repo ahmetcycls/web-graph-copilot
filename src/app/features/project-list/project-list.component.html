@@ -1,19 +1,21 @@
-<div class="projects-container p-4">
-  <!-- Create New Project Card -->
-  <div class="project-card bg-white rounded-lg overflow-hidden shadow-lg m-2 hover:shadow-2xl transition-shadow duration-300 ease-in-out cursor-pointer"
-       (click)="onCreateNewProject()">
-    <div class="p-4">
-      <h3 class="font-bold text-xl mb-2">Create New Project</h3>
-      <p class="text-gray-700 text-base">Click to create a new project</p>
+<div class="projects-container p-8 bg-gray-50 min-h-screen">
+  <div class="max-w-4xl mx-auto">
+    <!-- Create New Project Button -->
+    <div class="flex justify-end">
+      <button class="bg-indigo-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-indigo-700 transition duration-200" (click)="onCreateNewProject()">
+        + Create New Project
+      </button>
     </div>
-  </div>
 
-  <!-- Project Cards -->
-  <div *ngFor="let project of projects" class="project-card bg-white rounded-lg overflow-hidden shadow-lg m-2 hover:shadow-2xl transition-shadow duration-300 ease-in-out cursor-pointer"
-       (click)="onSelectProject(project.projectNodeId)">
-    <div class="p-4">
-      <h3 class="font-bold text-xl mb-2">{{ project.name }}</h3>
-      <p class="text-gray-700 text-base">{{ project.description }}</p>
+    <!-- Projects Grid -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Project Cards -->
+      <div *ngFor="let project of projects" class="project-card bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out cursor-pointer" (click)="onSelectProject(project.projectNodeId)">
+        <div class="p-6">
+          <h3 class="font-bold text-xl mb-2">{{ project.name }}</h3>
+          <p class="text-gray-700 text-base">{{ project.description }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

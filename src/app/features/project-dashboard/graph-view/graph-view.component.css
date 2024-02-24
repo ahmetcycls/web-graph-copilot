@@ -2,13 +2,36 @@
 
 .graph-container {
   width: 100%;
-  height: 500px;
-  border: 2px solid #4CAF50;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  transition: border-color 0.3s ease-in-out; /* Add a transition effect for color change */
+  height: 600px;
+  border-radius: 12px; /* More pronounced rounded corners */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background: #ffffff; /* Ensure background is white or any desired color */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for transformation and shadow */
+}
+
+.graph-container::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  border-radius: 12px; /* Match the container's border-radius */
+  z-index: 0;
+  transition: opacity 0.3s ease-in-out; /* Smooth transition for gradient opacity */
+  opacity: 0; /* Hide gradient by default */
+}
+
+.graph-container:hover::before {
+  opacity: 1; /* Show gradient on hover */
 }
 
 .graph-container:hover {
-  border-color: #ff6b6b; /* Change border color on hover for a dynamic effect */
+  transform: translateY(-5px); /* Slight lift effect */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+}
+
+/* Additional styles to ensure content inside .graph-container is above the pseudo-element */
+.graph-container * {
+  position: relative;
+  z-index: 1;
 }

@@ -1,6 +1,10 @@
-<div *ngIf="nodeData" class="node-details">
-  <h3>Node Details</h3>
-  <p><strong>Label:</strong> {{ nodeData.label }}</p>
-  <p><strong>Title:</strong> {{ nodeData.title }}</p>
-  <!-- Display other properties as needed -->
+<!-- NodeDetailsComponent with Tailwind CSS for a cohesive and beautiful design -->
+<div *ngIf="nodeData" class="absolute top-5 right-5 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl transform transition-all hover:-translate-y-1 hover:shadow-lg"  style="width: 300px; height: 250px;">
+  <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-300 mb-4">Node Details</h3>
+  <p class="text-md text-gray-800 dark:text-gray-200"><strong>Label:</strong> {{ nodeData.label }}</p>
+  <p class="text-md text-gray-800 dark:text-gray-200"><strong>Title:</strong> {{ nodeData.title }}</p>
+  <!-- Utilizing a gradient for a call-to-action or highlight -->
+  <div class="mt-4 py-2 px-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-md cursor-pointer">
+    <p>Explore More Details</p>
+  </div>
 </div>

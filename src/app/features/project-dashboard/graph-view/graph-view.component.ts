@@ -9,6 +9,7 @@ import { Socket } from 'ngx-socket-io';
   templateUrl: './graph-view.component.html',
   styleUrls: ['./graph-view.component.css'] // Ensure the CSS file path is correct
 })
+
 export class GraphViewComponent implements OnInit {
   @Input() projectNodeId: string;
   @ViewChild('graphContainer', { static: true }) graphContainer: ElementRef;
@@ -42,14 +43,14 @@ export class GraphViewComponent implements OnInit {
       // },
       layout: {
         hierarchical: {
-          // improvedLayout:true,
+          improvedLayout:true,
           // randomSeed: 100,
           enabled: true,
           direction: 'UD', // 'UD' for Up-Down, 'LR' for Left-Right
           sortMethod: 'directed', // 'directed' for Directed, 'hubsize' for Hub size
-          levelSeparation: 200,
+          levelSeparation: 500,
           nodeSpacing: 300,
-          shakeTowards: 'leaves'
+          shakeTowards: 'roots',
         },
       },
       interaction: {
@@ -60,7 +61,7 @@ export class GraphViewComponent implements OnInit {
         navigationButtons: true,
       },
       physics: {
-        enabled: false, // Disabling for static graphs
+        enabled: false,
       },
       edges: {
         arrows:{
@@ -78,17 +79,15 @@ export class GraphViewComponent implements OnInit {
           // maximum: 150,
         },
         font: {
-          size: 16,
+          size: 25,
           face: 'Arial',
           color: '#000000',
         },
         color: {
-          border: '#FFFFFF', // Optional: Change border color to white for better contrast
+          border: '#000000', // Optional: Change border color to white for better contrast
           background: '#333333', // Optional: Adjust node background for better visibility on black
         }
-        // Customize additional node properties if needed
       },
-      // Include additional options as needed
     };
 
     if (!this.network) {

@@ -8,14 +8,16 @@ import { ProjectDashboardComponent } from './project-dashboard.component';
 import { ProjectListComponent } from '../project-list/project-list.component';
 import { GraphViewComponent } from './graph-view/graph-view.component';
 import { ChatComponent } from './chat/chat.component';
-import {NodeDetailComponent} from "./node-detail/node-detail.component"; // Import ChatComponent here
+import {NodeDetailComponent} from "./node-detail/node-detail.component";
+import {CreateProjectComponent} from "../project-list/create-project/create-project.component"; // Import ChatComponent here
 @NgModule({
   declarations: [
     ProjectDashboardComponent,
     ProjectListComponent,
     GraphViewComponent,
     ChatComponent, // Declare ChatComponent here,
-    NodeDetailComponent
+    NodeDetailComponent,
+    CreateProjectComponent
   ],
   imports: [
     CommonModule,
