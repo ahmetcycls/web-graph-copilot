@@ -1,5 +1,5 @@
-<div class="chat-container absolute bottom-5 right-5 flex flex-col border-3 border-green-500 rounded-2xl bg-gray-50 shadow-2xl" style="width: 300px; height: 400px;">
-  <div class="messages flex-grow overflow-y-auto p-2" style="max-height: 430px;">
+<div class="chat-container absolute bottom-5 right-5 flex flex-col border-3 border-green-500 rounded-2xl bg-gray-50 shadow-2xl" style="width: 300px; height: 385px;">
+  <div class="messages flex-grow overflow-y-auto p-2" style="max-height: 400px;">
     <ng-container *ngFor="let message of chatMessages">
       <div *ngIf="message.role === 'assistant'" class="message mb-4 p-2 bg-indigo-100 rounded-md shadow">
         {{ message.content }}

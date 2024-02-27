@@ -37,13 +37,14 @@ export class GraphViewComponent implements OnInit {
   private initializeOrUpdateGraph(): void {
     const container = this.graphContainer.nativeElement;
     const data = { nodes: this.nodes, edges: this.edges };
+
+    //TODO get the options from the db but have a default setting
     const options = {
       // configure: {
       //   enabled: true
       // },
       layout: {
         hierarchical: {
-          improvedLayout:true,
           // randomSeed: 100,
           enabled: true,
           direction: 'UD', // 'UD' for Up-Down, 'LR' for Left-Right
@@ -51,14 +52,20 @@ export class GraphViewComponent implements OnInit {
           levelSeparation: 500,
           nodeSpacing: 300,
           shakeTowards: 'roots',
+          parentCentralization: true
         },
       },
+      manipulation: {
+        addNode: true
+      },
+
       interaction: {
         hover: true,
         dragNodes: true,
         dragView: true,
         zoomView: true,
-        navigationButtons: true,
+        multiselect: true,
+        // navigationButtons: true,
       },
       physics: {
         enabled: false,
@@ -66,17 +73,29 @@ export class GraphViewComponent implements OnInit {
       edges: {
         arrows:{
           to: true
-        }
+        },
+        color:{
+          color: '#000000',
+          highlight: '#ffffff',
+          hover: '#ffffff',
+          inherit: 'from',
+          opacity: 1.0
+        },
+        smooth: {
+          enabled: true,
+          type: 'continuous',
+          roundness: 0.5
+        },
       },
       nodes: {
         shape: 'box',
         widthConstraint: {
-          minimum: 150,
-          maximum: 200,
+          minimum: 200,
+          maximum: 300,
         },
         heightConstraint: {
           minimum: 100,
-          // maximum: 150,
+          maximum: 150,
         },
         font: {
           size: 25,
@@ -85,7 +104,7 @@ export class GraphViewComponent implements OnInit {
         },
         color: {
           border: '#000000', // Optional: Change border color to white for better contrast
-          background: '#333333', // Optional: Adjust node background for better visibility on black
+          background: '#ec2c2c', // Optional: Adjust node background for better visibility on black
         }
       },
     };
@@ -97,13 +116,20 @@ export class GraphViewComponent implements OnInit {
       // Update the network with new data
       this.network.setData(data);
     }
+
+    // Single selection
     this.network.on("click", params => {
-      if (params.nodes.length > 0) {
-        const nodeId = params.nodes[0]; // Get the ID of the clicked node
-        const nodeData = this.nodes.get(nodeId); // Retrieve node data
+      if (params.nodes.length > 0 && params.nodes.length < 2) {
+        const targetNodeId = params.nodes[0]; // Get the ID of the clicked node
+        const nodeData = this.nodes.get(targetNodeId); // Retrieve node data
         this.nodeDetailService.updateNodeDetail(nodeData); // Update the node detail using the service
       }
     });
+    this.network.on("doubleClick", params => {
+      //TODO on double click
+    });
+
+
   }
 
   private fetchAndInitializeGraph(): void {

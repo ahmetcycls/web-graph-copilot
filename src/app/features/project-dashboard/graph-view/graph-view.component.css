@@ -1,9 +1,10 @@
 /* graph-view.component.css */
 
 .graph-container {
-  width: 100%;
-  height: 600px;
   border-radius: 12px; /* More pronounced rounded corners */
+  /*For no full screen:*/
+  /*width: 100%;*/
+  /*height: 500px;*/
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -16,14 +17,15 @@
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
   border-radius: 12px; /* Match the container's border-radius */
+  background: linear-gradient(145deg, #6ee7b7, #3b82f6); /* Example gradient from green to blue */
   z-index: 0;
   transition: opacity 0.3s ease-in-out; /* Smooth transition for gradient opacity */
-  opacity: 0; /* Hide gradient by default */
+  opacity: 1; /* Hide gradient by default */
 }
 
-.graph-container:hover::before {
-  opacity: 1; /* Show gradient on hover */
-}
+/*.graph-container:hover::before {*/
+/*  opacity: 1; !* Show gradient on hover *!*/
+/*}*/
 
 .graph-container:hover {
   transform: translateY(-5px); /* Slight lift effect */
