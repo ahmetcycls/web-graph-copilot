@@ -1,0 +1,51 @@
+/*.overlay {*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  width: 100vw;*/
+/*  height: 100vh;*/
+/*  background-color: rgba(0, 0, 0, 0.5);*/
+/*  z-index: 1040;*/
+/*}*/
+
+/*.modal-content {*/
+/*  position: fixed;*/
+/*  top: 50%;*/
+/*  left: 50%;*/
+/*  transform: translate(-50%, -50%);*/
+/*  background-color: white;*/
+/*  padding: 20px;*/
+/*  border-radius: 8px;*/
+/*  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+/*  width: 400px;*/
+/*  z-index: 1050;*/
+/*}*/
+
+/*.modal-header {*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.form-group {*/
+/*  margin-bottom: 15px;*/
+/*}*/
+
+/*.form-control {*/
+/*  width: 100%;*/
+/*  padding: 10px;*/
+/*  margin-top: 5px;*/
+/*  border-radius: 5px;*/
+/*  border: 1px solid #ccc;*/
+/*}*/
+
+/*.modal-footer {*/
+/*  margin-top: 20px;*/
+/*  text-align: right;*/
+/*}*/
+
+/*.modal-footer button {*/
+/*  padding: 10px 20px;*/
+/*  margin-left: 10px;*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  cursor: pointer;*/
+/*}*/

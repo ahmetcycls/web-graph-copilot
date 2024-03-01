@@ -1,0 +1,11 @@
+ng add @ngrx/store@14.3.3 --minimal false
+ng add @ngrx/effects@14.3.3
+ng add @ngrx/entity@14.3.3
+ng add @ngrx/store-devtools@14.3.3
+socket.io
+npm install -D tailwindcss postcss autoprefixer
+t> npx tailwindcss init -p
+ npm install @types/hammerjs --save-dev
+> npm install vis-network vis-data
+ npm install -g @angular/cli14.2.13
+ npm install -g @angular/cli@14

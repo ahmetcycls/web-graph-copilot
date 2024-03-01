@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ChatService } from '../../../core/services/chat.service';
 import { Socket } from 'ngx-socket-io';
 
 @Component({

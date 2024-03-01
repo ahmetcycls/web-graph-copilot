@@ -20,4 +20,9 @@ export class GraphDataService {
     };
     return this.http.post<any>(this.apiUrl, payload);
   }
+
+  addNode(nodeDetails: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/app/v1/tasks/create`, nodeDetails);
+  }
+
 }

@@ -1,2 +1,10 @@
-<!-- Using Tailwind CSS for styling directly in the template -->
-<div #graphContainer class="graph-container tw-w-full tw-h-full tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-lg tw-transition-colors tw-duration-300 tw-ease-in-out hover:tw-border-blue-500"></div>
+<!--src/app/features/project-dashboard/graph-view/graph.view.component.html-->
+
+<div #graphContainer  class="graph-container tw-w-full tw-h-full tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-lg tw-transition-colors tw-duration-300 tw-ease-in-out hover:tw-border-blue-500"></div>
+<app-graph-context-menu
+  [position]="contextMenuPosition"
+  [isVisible]="showContextMenu"
+  [nodeId]="selectedNodeId"
+  (actionSelected)="onContextMenuActionSelect($event)"> <!-- This is correctly inside the component tag -->
+</app-graph-context-menu>
+<ng-template #dynamicInsertionPoint></ng-template>

@@ -1,0 +1,37 @@
+<!-- Optional: Overlay for dimming background -->
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40" *ngIf="isVisible"></div>
+
+<!-- Modal Content -->
+<div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-xl" *ngIf="isVisible">
+  <h2 class="text-xl font-semibold mb-4">Add Node</h2>
+  <div class="space-y-4">
+    <div>
+      <label for="nodeName" class="block text-sm font-medium text-gray-700">Node Name:</label>
+      <input type="text" id="nodeName" [(ngModel)]="nodeName" placeholder="Enter node name" class="mt-1 p-2 w-full border rounded-md">
+    </div>
+    <div>
+      <label for="nodeDescription" class="block text-sm font-medium text-gray-700">Description:</label>
+      <textarea id="nodeDescription" [(ngModel)]="nodeDescription" rows="3" placeholder="Enter node description" class="mt-1 p-2 w-full border rounded-md"></textarea>
+    </div>
+    <div>
+      <label for="assignedTo" class="block text-sm font-medium text-gray-700">Assigned To:</label>
+      <input type="text" id="assignedTo" [(ngModel)]="assignedTo" placeholder="Enter assignee" class="mt-1 p-2 w-full border rounded-md">
+    </div>
+    <div>
+      <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+      <select id="status" [(ngModel)]="status" class="mt-1 p-2 w-full border rounded-md">
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+    <div>
+      <label for="skills" class="block text-sm font-medium text-gray-700">Skills:</label>
+      <input type="text" id="skills" [(ngModel)]="skills" placeholder="Enter skills comma-separated (e.g., JavaScript,OAuth)" class="mt-1 p-2 w-full border rounded-md">
+    </div>
+    <div class="flex justify-end space-x-2">
+      <button type="button" (click)="addNode()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Add Node</button>
+      <button type="button" (click)="cancel()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancel</button>
+    </div>
+  </div>
+</div>
