@@ -71,7 +71,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
     // You might need to adjust this based on your actual data structure
     this.nodes.add({
       id: newNodeData.nodeId,
-      label: newNodeData.label || "No label",
+      label: newNodeData.title || "No label",
       title: newNodeData.title || 'No title',
       group: newNodeData.group || 'task'
     });
