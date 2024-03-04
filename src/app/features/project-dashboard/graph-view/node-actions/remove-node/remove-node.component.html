@@ -1,1 +1,21 @@
-<p>remove-node works!</p>
+<!-- Overlay for dimming background, showing only if isVisible is true -->
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40" *ngIf="isVisible"></div>
+
+<!-- Modal Content, showing only if isVisible is true -->
+<div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-xl" *ngIf="isVisible">
+  <h2 class="text-xl font-semibold mb-4">
+    Delete {{ actionType === 'deleteNodeAndSubNodes' ? 'Node and Subnodes' : 'Subnodes' }} of > <span class="font-normal text-gray-600">{{ parentNodeLabel }}</span>
+  </h2>
+
+  <div class="space-y-4">
+    <div class="text-red-600">
+      <p>Warning: This action is irreversible. {{ actionType === 'deleteNodeAndSubNodes' ? 'The node and all its subnodes will' : 'All the subnodes of the selected node will' }} be deleted.</p>
+    </div>
+    <div class="flex justify-end space-x-2">
+      <button type="button" (click)="handleDeletion()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+        Delete {{ actionType === 'deleteNodeAndSubNodes' ? 'Node and Subnodes' : 'Subnodes' }}
+      </button>
+      <button type="button" (click)="cancel()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancel</button>
+    </div>
+  </div>
+</div>

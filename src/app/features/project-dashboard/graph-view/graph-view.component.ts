@@ -8,6 +8,14 @@ import { Subject} from "rxjs";
 import { OnDestroy } from '@angular/core';
 import {options} from "./graph-config";
 import {AddNodeComponent} from "./node-actions/add-node/add-node.component";
+import {RemoveNodeComponent} from "./node-actions/remove-node/remove-node.component";
+
+interface DynamicComponentContext {
+  nodeId: string | null;
+  projectNodeId: string;
+  nodeLabel: string;
+  action?: string; // Optional, to be used as needed
+}
 @Component({
   selector: 'app-graph-view',
   templateUrl: './graph-view.component.html',
@@ -38,8 +46,47 @@ export class GraphViewComponent implements OnInit, OnDestroy {
     this.socket.on('graph_update', (data) => {
       this.fetchAndInitializeGraph();
     });
+
+    this.socket.on('added_node', (data) => {
+      console.log('Node added:', data);
+      this.addNodeToGraph(data); // Add the new node to the graph
+    });
+    //TODO realtime updating instead of fetching the whole graph
+    this.socket.on('deleted_node', (data) => {
+      console.log('Node deleted:', data);
+      this.deleteNodeFromGraph(data); // Remove the deleted node from the graph
+    });
   }
 
+  deleteNodeFromGraph(responseData): void {
+    const nodeId = responseData.data.nodeId;
+    this.nodes.remove(nodeId);
+    this.edges.remove(this.edges.getIds().filter(id => id === nodeId));
+    this.network.setData({ nodes: this.nodes, edges: this.edges });
+  }
+  addNodeToGraph(responseData): void {
+
+    const newNodeData = responseData.data;
+    // Assuming newNodeData has all the necessary properties
+    // You might need to adjust this based on your actual data structure
+    this.nodes.add({
+      id: newNodeData.nodeId,
+      label: newNodeData.label || "No label",
+      title: newNodeData.title || 'No title',
+      group: newNodeData.group || 'task'
+    });
+
+
+    if (newNodeData.edge) {
+      this.edges.add({
+        from: newNodeData.edge.from,
+        to: newNodeData.edge.to
+      });
+    }
+
+    // Update the graph to reflect the new node and edge
+    this.network.setData({ nodes: this.nodes, edges: this.edges });
+  }
   ngOnDestroy(): void {
     this.destroy$.next(); // Emit a value to signal that the component is being destroyed
     this.destroy$.complete(); // Complete the observable to clean it up
@@ -117,19 +164,46 @@ export class GraphViewComponent implements OnInit, OnDestroy {
 
 
   }
+
+
   onContextMenuActionSelect(event: {action: string, nodeId: string | null}) {
     console.log("Action selected:", event.action, "for nodeId:", event.nodeId);
     // Example: Dynamically loading AddNodeComponent
-    if (event.action === 'addNode') {
-      this.loadDynamicComponent(AddNodeComponent, event.nodeId);
+    const nodeData = this.nodes.get(event.nodeId);
+    const nodeLabel = nodeData ? nodeData.label : 'No Label';
+    const context: DynamicComponentContext = {
+      nodeId: event.nodeId,
+      projectNodeId: this.projectNodeId,
+      nodeLabel: nodeLabel,
+      action: event.action // Include the action here
+    };
+    let component: Type<any>;
+    switch(event.action) {
+      case 'addNode':
+        component = AddNodeComponent;
+        break;
+      case 'deleteNodeAndSubNodes':
+      case 'deleteSubNodes':
+        component = RemoveNodeComponent;
+        break;
+      default:
+        console.error('Unknown action:', event.action);
+        return;
     }
-    // Add other actions as needed
+
+    this.loadDynamicComponent(component, context);
   }
-  private loadDynamicComponent(component: Type<any>, nodeId: string | null) {
+  private loadDynamicComponent(component: Type<any>, context: DynamicComponentContext) {
     const componentRef = this.dynamicInsertionPoint.createComponent(component);
-    if (componentRef.instance instanceof AddNodeComponent) {
-      componentRef.instance.nodeId = nodeId;
-      componentRef.instance.isVisible = true; // Make sure the component is visible
+    const instance = componentRef.instance;
+
+    instance.nodeId = context.nodeId;
+    instance.isVisible = true; // Make sure the component is visible
+    instance.projectNodeId = context.projectNodeId;
+    instance.parentNodeLabel = context.nodeLabel;
+
+    if (instance instanceof RemoveNodeComponent && context.action) {
+      instance.actionType = context.action;
     }
     // Listen to component's events if needed, or perform additional setup
   }

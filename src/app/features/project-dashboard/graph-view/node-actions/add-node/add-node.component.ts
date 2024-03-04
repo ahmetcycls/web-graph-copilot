@@ -7,10 +7,11 @@ import { Socket } from 'ngx-socket-io';
   styleUrls: ['./add-node.component.css'],
 })
 export class AddNodeComponent implements OnInit {
-  @Input() userId: number = 50; // Assuming user_id might be static or passed from parent
+  @Input() userId: string = "50"; // Assuming user_id might be static or passed from parent
+  //TODO: Add the correct type for projectNodeId
   @Input() projectNodeId: string | null = null; // ID of the current project
   @Input() nodeId: string | null = null; // ID of the parent node under which the new node will be added
-
+  @Input() parentNodeLabel: string | null = null; // Label of the parent node under which the new node will be added
   @Output() onAddNode = new EventEmitter<any>();
   isVisible = true;
   nodeName = '';
@@ -24,12 +25,6 @@ export class AddNodeComponent implements OnInit {
   }
   ngOnInit(): void {}
 
-  addSkill(): void {
-    if (this.skillInput.trim()) {
-      this.skills.push(this.skillInput.trim());
-      this.skillInput = ''; // Reset skill input
-    }
-  }
 
   removeSkill(index: number): void {
     this.skills.splice(index, 1);
@@ -37,25 +32,26 @@ export class AddNodeComponent implements OnInit {
 
   addNode(): void {
     if (this.nodeName.trim() && this.nodeDescription.trim()) {
+      const skillsArray = this.skillInput.split(',').map(skill => skill.trim());
+
       const newNode = {
         user_id: this.userId,
         project_node_id: this.projectNodeId,
         parent_node_id: this.nodeId,
         task_details: [{
+          label: this.nodeName.trim(),
           title: this.nodeName.trim(),
           description: this.nodeDescription.trim(),
           assigned_to: this.assignedTo.trim(),
           status: this.status.trim(),
-          skills: this.skills
+          skills: skillsArray // Use the processed array here
         }]
       };
-      this.onAddNode.emit(newNode);
 
-      this.socket.emit('add_node', newNode);
+      this.socket.emit('create_task_socket', newNode);
 
       this.resetForm();
       this.isVisible = false;
-
     } else {
       console.log('Node name and description are required');
     }

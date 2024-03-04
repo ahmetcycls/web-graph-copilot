@@ -1,12 +1,13 @@
-<!--src/app/features/project-dashboard/graph-view/graph-context-menu/graph-context-menu.component.html-->
-
-
-<!-- graph-context-menu.component.html -->
-<!-- graph-context-menu.component.html -->
-<div class="absolute bg-white shadow-md rounded-md" [ngStyle]="{'top.px': position.y, 'left.px': position.x}" *ngIf="isVisible">
+<div class="absolute bg-white shadow-md rounded-md w-48" [ngStyle]="{'top.px': position.y, 'left.px': position.x}" *ngIf="isVisible">
   <ul class="flex flex-col">
-    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectAction('addNode')">Add Node</li>
+    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectAction('addNode')">Add Subnode</li>
     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectAction('editNode')">Edit Node</li>
-    <!-- Add more options as needed -->
+    <li class="group px-4 py-2 hover:bg-gray-100 cursor-pointer relative">
+      Delete Node
+      <ul class="absolute hidden group-hover:block bg-white shadow-md rounded-md mt-1 w-48">
+        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectAction('deleteSubNodes')">Delete Subnodes</li>
+        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectAction('deleteNodeAndSubNodes')">Delete node and subnodes</li>
+      </ul>
+    </li>
   </ul>
 </div>
