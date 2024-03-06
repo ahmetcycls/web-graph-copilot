@@ -3,14 +3,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProjectListComponent } from './features/project-list/project-list.component';
-import { ProjectDashboardComponent } from './features/project-dashboard/project-dashboard.component';
+// import { ProjectDashboardComponent } from './features/project-dashboard/project-dashboard.component';
 import {CreateProjectComponent} from "./features/project-list/create-project/create-project.component";
+import {GraphViewD3jsComponent} from "./features/project-dashboard/graph-view-d3js/graph-view-d3js.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
+  // { path: '', redirectTo: '/projects', pathMatch: 'full' },
+  { path: '', component : GraphViewD3jsComponent},
+
   { path: 'projects', component: ProjectListComponent },
   { path: 'projects/create', component: CreateProjectComponent },
-  { path: 'projects/:projectNodeId', component: ProjectDashboardComponent },
+  // { path: 'projects/:projectNodeId', component: ProjectDashboardComponent },
   // The ProjectDashboardComponent will include both the GraphViewComponent and ChatComponent
 ];
 
