@@ -1,2 +1,5 @@
-<!-- In graph-view-d3js.component.html -->
-<div appGraphDirective [nodes]="nodes" [edges]="edges" [projectNodeId]="projectNodeId"></div>
+<!-- Updated HTML with template reference variable -->
+<div>
+  <div #graphDirectiveRef appGraphDirective [nodes]="nodes" [edges]="edges" [projectNodeId]="projectNodeId"></div>
+  <button (click)="saveSvg()">Save SVG</button>
+</div>

@@ -5,3 +5,19 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.node-rect {
+  fill: #ffffff; /* Tailwind white */
+  stroke: #000000; /* Tailwind blue-500 */
+  stroke-width: 1.5px;
+}
+
+.node-text {
+  fill: #1f2937; /* Tailwind gray-800 */
+  font-size: 15px; /* Approximating Tailwind text-base */
+}
+
+.node-highlight {
+  stroke: #ff0; /* Yellow stroke */
+  stroke-width: 3px; /* Thicker stroke */
+}

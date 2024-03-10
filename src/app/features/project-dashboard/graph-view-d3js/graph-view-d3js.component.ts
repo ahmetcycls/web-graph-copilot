@@ -6,6 +6,7 @@ import {Socket} from "ngx-socket-io";
 import {takeUntil} from "rxjs/operators";
 import {AddNodeComponent} from "../graph-view/node-actions/add-node/add-node.component";
 import {RemoveNodeComponent} from "../graph-view/node-actions/remove-node/remove-node.component";
+import {GraphDirective} from "./graph-directive.directive";
 
 interface DynamicComponentContext {
   nodeId: string | null;
@@ -25,7 +26,16 @@ export class GraphViewD3jsComponent implements OnInit {
   @ViewChild('graphContainer', { static: true }) graphContainer: ElementRef;
 
   @ViewChild('dynamicInsertionPoint', { read: ViewContainerRef }) dynamicInsertionPoint: ViewContainerRef;
+  @ViewChild('graphDirectiveRef') graphDirective!: GraphDirective;
 
+
+  saveSvg(): void {
+    if (this.graphDirective) {
+      this.graphDirective.saveSvg();
+    } else {
+      console.error('GraphDirective reference not found');
+    }
+  }
   @Input() projectNodeId: string;
   nodes: any[];
   edges: any[];
@@ -99,8 +109,56 @@ export class GraphViewD3jsComponent implements OnInit {
   //   this.initializeOrUpdateGraph(); // Initial setup of the graph
   // }
 
+  // private fetchAndInitializeGraph(): void {
+  //   // Hardcoded data
+  //   const data = {
+  //     "nodes": [
+  //       {
+  //         "id": "FNS2HdRcVW",
+  //         "label": "5000 potatoes",
+  //         "title": "project to ship 5000 potatoes",
+  //         "group": "project"
+  //       },
+  //       {
+  //         "id": "7bjFkH7UQ2",
+  //         "label": "UX arastirmasi",
+  //         "title": "blablabla",
+  //         "group": "task",
+  //         "status": "",
+  //         "assigned_to": "User1"
+  //       },
+  //       {
+  //         "id": "6bzjqcosLd",
+  //         "label": "Node name",
+  //         "title": "Description",
+  //         "group": "task",
+  //         "status": "Not Started",
+  //         "assigned_to": "assigned_to"
+  //       }
+  //     ],
+  //     "edges": [
+  //       {
+  //         "from": "FNS2HdRcVW",
+  //         "to": "7bjFkH7UQ2"
+  //       },
+  //       {
+  //         "from": "FNS2HdRcVW",
+  //         "to": "6bzjqcosLd"
+  //       }],
+  //
+  //     "projectNodeId": "FNS2HdRcVW"
+  //   };
+  //
+  //   // Directly use the hardcoded data instead of fetching it
+  //   this.nodes = data.nodes;
+  //   this.edges = data.edges;
+  //   this.projectNodeId = data.projectNodeId;
+  //   // If you have a function to initialize or update your graph based on this data, call it here
+  //   // e.g., this.initializeOrUpdateGraph();
+  // }
   private fetchAndInitializeGraph(): void {
-    this.graphDataService.getGraphData("FNS2HdRcVW").pipe(
+    // this.graphDataService.getGraphData("FNS2HdRcVW").pipe(
+    this.graphDataService.getGraphData("EgCZcapkpa").pipe(
       takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         // Assuming data.nodes and data.edges are already in a format D3 can use
