@@ -1,0 +1,10 @@
+<!-- src/app/login/login.component.html -->
+
+<div *ngIf="!isLoggedIn">
+  <button (click)="login()">Login</button>
+</div>
+
+<div *ngIf="isLoggedIn">
+  <p>Welcome, {{userProfile.firstName}} {{userProfile.lastName}}</p>
+  <button (click)="logout()">Logout</button>
+</div>
