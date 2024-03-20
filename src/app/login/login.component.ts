@@ -1,33 +1,29 @@
-// src/app/login/login.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'] // or .scss if you are using Sass
 })
 export class LoginComponent implements OnInit {
-
   isLoggedIn = false;
-  userProfile: any;
 
-  constructor(private keycloakService: KeycloakService) { }
+  constructor(private keycloakService: KeycloakService) {}
 
-  async ngOnInit(): Promise<void> {
-    this.isLoggedIn = await this.keycloakService.isLoggedIn();
-
-    if (this.isLoggedIn) {
-      this.userProfile = await this.keycloakService.loadUserProfile();
-    }
+  ngOnInit(): void {
+    this.updateLoginStatus();
   }
 
-  login() {
+  async updateLoginStatus(): Promise<void> {
+    this.isLoggedIn = await this.keycloakService.isLoggedIn();
+  }
+
+  login(): void {
     this.keycloakService.login();
   }
 
-  logout() {
+  logout(): void {
     this.keycloakService.logout();
   }
 }

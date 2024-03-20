@@ -9,7 +9,7 @@ import {AuthGuard} from "./guard/auth.guard";
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent }, // Add the login route
-  { path: 'projects', component: ProjectListComponent }, // Protect the project list route
+  { path: 'projects', component: ProjectListComponent, canActivate: [AuthGuard] }, // Protect the project list route
   {
     path: 'projects/create',
     component: CreateProjectComponent,
