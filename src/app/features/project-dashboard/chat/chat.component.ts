@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-chat',
@@ -13,7 +14,7 @@ export class ChatComponent implements OnInit {
   isLoading: boolean = false; // Flag for loading indicator
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
 
-  constructor(private socket: Socket) { }
+  constructor(private socket: Socket,private keycloakService: KeycloakService ) { }
 
   ngOnInit(): void {
     this.socket.on('ai_copilot_response', (data) => {
@@ -23,30 +24,31 @@ export class ChatComponent implements OnInit {
     });
   }
 
+
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
   sendMessage(): void {
     if (this.newMessage.trim()) {
-      // Copy the newMessage value before clearing it
       const messageContent = this.newMessage.trim();
-
-      // Clear the input field immediately after hitting enter
       this.newMessage = '';
-      this.isLoading = true; // Show loading indicator
-
-      // Push the user's message to chatMessages for immediate display
+      this.isLoading = true;
       this.chatMessages.push({ role: 'user', content: messageContent });
-      // Prepare payload without the last input (user's message)
-      const payload = {
+
+      this.keycloakService.loadUserProfile().then(profile => {
+        const payload = {
           input: messageContent,
-          user_id: "50",
+          user_id: profile.id,
           project_node_id: this.projectNodeId,
-          history: this.chatMessages.slice(0,- 1)
-      };
-      console.log(payload);
-      this.socket.emit('AI_copilot_message', payload);
+          history: this.chatMessages.slice(0, -1)
+        };
+        console.log(payload);
+        this.socket.emit('AI_copilot_message', payload);
+      }).catch(err => {
+        console.error('Error loading user profile:', err);
+        // Handle the error case, e.g., show an error message or use a default user_id
+      });
     }
   }
 

@@ -14,7 +14,7 @@ export class ProjectListComponent implements OnInit {
 
   ngOnInit(): void {
     this.keycloakService.loadUserProfile().then(profile => {
-      console.log(profile)
+      console.log(profile.id)
       this.projectService.getProjects(profile.id).subscribe({
         next: (data) => {
           this.projects = data.projects;
