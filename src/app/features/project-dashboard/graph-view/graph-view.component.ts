@@ -3,13 +3,13 @@ import { Network, Node, Edge, DataSet } from 'vis-network/standalone';
 import { GraphDataService } from '../../../core/services/graph-data.service';
 import { NodeDetailService } from '../../../core/services/node-detail.service';
 import { Socket } from 'ngx-socket-io';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { Subject} from "rxjs";
 import { OnDestroy } from '@angular/core';
 import {options} from "./graph-config";
 import {AddNodeComponent} from "./node-actions/add-node/add-node.component";
 import {RemoveNodeComponent} from "./node-actions/remove-node/remove-node.component";
-
+import { from } from 'rxjs';
 interface DynamicComponentContext {
   nodeId: string | null;
   projectNodeId: string;
@@ -145,13 +145,17 @@ export class GraphViewComponent implements OnInit, OnDestroy {
       this.showContextMenu = false;
     }
   }
-  private fetchAndInitializeGraph(): void {
-    this.graphDataService.getGraphData(this.projectNodeId).pipe(
-      takeUntil(this.destroy$)).subscribe({
 
+  private fetchAndInitializeGraph(): void {
+    // Convert the Promise returned by getGraphData() to an Observable
+    from(this.graphDataService.getGraphData(this.projectNodeId)).pipe(
+      // Use switchMap to handle the Observable<Observable<any>> structure
+      switchMap(responseObservable => responseObservable),
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (data) => {
         this.nodes.clear();
-        this.edges.clear();
+        this.edges.clear(); 
         this.nodes.add(data.nodes);
         this.edges.add(data.edges);
         console.log(data);
@@ -161,8 +165,6 @@ export class GraphViewComponent implements OnInit, OnDestroy {
         console.error('Failed to fetch graph data:', err);
       }
     });
-
-
   }
 
 

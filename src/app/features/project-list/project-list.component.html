@@ -7,8 +7,13 @@
       </button>
     </div>
 
+    <!-- Conditionally Display No Projects Message -->
+    <div *ngIf="projects.length === 0" class="mt-8 text-center text-gray-700">
+      <p>No projects found.</p>
+    </div>
+
     <!-- Projects Grid -->
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngIf="projects.length > 0" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Project Cards -->
       <div *ngFor="let project of projects" class="project-card bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out cursor-pointer" (click)="onSelectProject(project.projectNodeId)">
         <div class="p-6">
