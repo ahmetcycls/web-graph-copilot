@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-add-node',
@@ -7,7 +8,7 @@ import { Socket } from 'ngx-socket-io';
   styleUrls: ['./add-node.component.css'],
 })
 export class AddNodeComponent implements OnInit {
-  @Input() userId: string = "50"; // Assuming user_id might be static or passed from parent
+  userId: string; // Assuming user_id might be static or passed from parent
   //TODO: Add the correct type for projectNodeId
   @Input() projectNodeId: string | null = null; // ID of the current project
   @Input() nodeId: string | null = null; // ID of the parent node under which the new node will be added
@@ -21,9 +22,14 @@ export class AddNodeComponent implements OnInit {
   skills: string[] = [];
   skillInput = ''; // Temporary input for adding skills
 
-  constructor(private socket: Socket) {
+  constructor(private socket: Socket, private keycloakService: KeycloakService) {
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.keycloakService.loadUserProfile().then(profile => {
+      this.userId = profile.id;
+    }).catch(err => console.error('Error loading user profile:', err));
+  }
 
 
   removeSkill(index: number): void {

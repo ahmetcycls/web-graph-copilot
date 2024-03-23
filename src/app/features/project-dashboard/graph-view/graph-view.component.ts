@@ -30,7 +30,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
 
 
   contextMenuPosition = { x: 0, y: 0 };
-  showContextMenu = false;
+    showContextMenu = false;
   selectedNodeId: string | null = null;
 
   nodes: DataSet<Node> = new DataSet([]);
@@ -68,7 +68,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
     this.nodes.add({
       id: nodeData.nodeId,
       label: nodeData.title || "No label",
-      title: nodeData.description || 'No title', // Assuming you want the description as a tooltip
+      title: nodeData.title || 'No title', // Assuming you want the description as a tooltip
       group: nodeData.group || 'task' // Default group is 'task' if not specified
     });
   }
@@ -169,7 +169,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
 
 
   onContextMenuActionSelect(event: {action: string, nodeId: string | null}) {
-    console.log("Action selected:", event.action, "for nodeId:", event.nodeId);
+    console.log("Action   selected:", event.action, "for nodeId:", event.nodeId);
     // Example: Dynamically loading AddNodeComponent
     const nodeData = this.nodes.get(event.nodeId);
     const nodeLabel = nodeData ? nodeData.label : 'No Label';
