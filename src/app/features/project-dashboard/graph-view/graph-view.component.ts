@@ -51,42 +51,42 @@ export class GraphViewComponent implements OnInit, OnDestroy {
       console.log('Node added:', data);
       this.addNodeToGraph(data); // Add the new node to the graph
     });
+
+    this.socket.on('added_edge', (data) => {
+      console.log('Edge adding:', data);
+      this.addEdgeToGraph(data); // Add the new node to the graph
+    });
     //TODO realtime updating instead of fetching the whole graph
     this.socket.on('deleted_node', (data) => {
       console.log('Node deleted:', data);
       this.deleteNodeFromGraph(data); // Remove the deleted node from the graph
     });
   }
-
+  addNodeToGraph(nodeData): void {
+    // Assuming nodeData contains all the necessary properties directly
+    // Adjust this based on your actual node data structure
+    this.nodes.add({
+      id: nodeData.nodeId,
+      label: nodeData.title || "No label",
+      title: nodeData.description || 'No title', // Assuming you want the description as a tooltip
+      group: nodeData.group || 'task' // Default group is 'task' if not specified
+    });
+  }
+  addEdgeToGraph(edgeData): void {
+    // Directly adding the edge based on the provided data
+    // Assuming edgeData contains 'from' and 'to' properties
+    this.edges.add({
+      from: edgeData.from,
+      to: edgeData.to
+    });
+  }
   deleteNodeFromGraph(responseData): void {
     const nodeId = responseData.data.nodeId;
     this.nodes.remove(nodeId);
     this.edges.remove(this.edges.getIds().filter(id => id === nodeId));
     this.network.setData({ nodes: this.nodes, edges: this.edges });
   }
-  addNodeToGraph(responseData): void {
 
-    const newNodeData = responseData.data;
-    // Assuming newNodeData has all the necessary properties
-    // You might need to adjust this based on your actual data structure
-    this.nodes.add({
-      id: newNodeData.nodeId,
-      label: newNodeData.title || "No label",
-      title: newNodeData.title || 'No title',
-      group: newNodeData.group || 'task'
-    });
-
-
-    if (newNodeData.edge) {
-      this.edges.add({
-        from: newNodeData.edge.from,
-        to: newNodeData.edge.to
-      });
-    }
-
-    // Update the graph to reflect the new node and edge
-    this.network.setData({ nodes: this.nodes, edges: this.edges });
-  }
   ngOnDestroy(): void {
     this.destroy$.next(); // Emit a value to signal that the component is being destroyed
     this.destroy$.complete(); // Complete the observable to clean it up
@@ -155,7 +155,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (data) => {
         this.nodes.clear();
-        this.edges.clear(); 
+        this.edges.clear();
         this.nodes.add(data.nodes);
         this.edges.add(data.edges);
         console.log(data);
