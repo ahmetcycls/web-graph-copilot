@@ -69,7 +69,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
       id: nodeData.nodeId,
       label: nodeData.title || "No label",
       title: nodeData.title || 'No title', // Assuming you want the description as a tooltip
-      group: nodeData.group || 'task' // Default group is 'task' if not specified
+      group: nodeData.group || 'task', // Default group is 'task' if not specified
     });
   }
   addEdgeToGraph(edgeData): void {

@@ -37,8 +37,8 @@ export class AddNodeComponent implements OnInit {
   }
 
   addNode(): void {
-    if (this.nodeName.trim() && this.nodeDescription.trim()) {
-      const skillsArray = this.skillInput.split(',').map(skill => skill.trim());
+    if (this.nodeName.trim()) {
+      // const skillsArray = this.skillInput.split(',').map(skill => skill.trim());
 
       const newNode = {
         user_id: this.userId,
@@ -48,9 +48,9 @@ export class AddNodeComponent implements OnInit {
           label: this.nodeName.trim(),
           title: this.nodeName.trim(),
           description: this.nodeDescription.trim(),
-          assigned_to: this.assignedTo.trim(),
-          status: this.status.trim(),
-          skills: skillsArray // Use the processed array here
+          // assigned_to: this.assignedTo.trim(),
+          // status: this.status.trim(),
+          // skills: skillsArray // Use the processed array here
         }]
       };
 

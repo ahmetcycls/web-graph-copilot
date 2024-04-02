@@ -1,16 +1,25 @@
-<div class="chat-container absolute bottom-5 right-5 flex flex-col border-3 border-green-500 rounded-2xl bg-gray-50 shadow-2xl" style="width: 300px; height: 385px;">
-  <div class="messages flex-grow overflow-y-auto p-2" style="max-height: 400px;">
+<!-- Chat Container -->
+<div class="chat-container" #chatContainer>
+  <div class="messages">
+    <div class="chat-controls">
+      <mat-slide-toggle>Enable Notifications</mat-slide-toggle>
+      <mat-form-field>
+        <mat-label>Choose AI</mat-label>
+        <mat-select [(ngModel)]="selectedAI">
+          <mat-option value="gpt-4">GPT-4</mat-option>
+          <mat-option value="gpt-3.5">GPT-3.5</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <ng-container *ngFor="let message of chatMessages; let i = index">
-      <!-- Exclude the second message if it's from the assistant, all others are displayed -->
-      <div *ngIf="(i !== 1 || message.role !== 'assistant') && message.role === 'assistant'" class="message mb-4 p-2 bg-indigo-100 rounded-md shadow">
+      <div *ngIf="message.role === 'assistant'" class="message assistant-message">
         {{ message.content }}
       </div>
-      <div *ngIf="message.role === 'user'" class="message mb-4 p-2 bg-blue-100 rounded-md shadow">
+      <div *ngIf="message.role === 'user'" class="message user-message">
         {{ message.content }}
       </div>
     </ng-container>
-    <!-- Loading indicator -->
-    <div *ngIf="isLoading" class="loading text-center p-2">Loading...</div>
   </div>
-  <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." class="mt-2 p-3 w-full text-gray-700 bg-white rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent shadow-sm transition-all">
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." class="chat-input">
 </div>
