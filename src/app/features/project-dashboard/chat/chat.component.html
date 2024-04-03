@@ -1,16 +1,16 @@
 <!-- Chat Container -->
 <div class="chat-container" #chatContainer>
   <div class="messages">
-    <div class="chat-controls">
-      <mat-slide-toggle>Enable Notifications</mat-slide-toggle>
-      <mat-form-field>
-        <mat-label>Choose AI</mat-label>
-        <mat-select [(ngModel)]="selectedAI">
-          <mat-option value="gpt-4">GPT-4</mat-option>
-          <mat-option value="gpt-3.5">GPT-3.5</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+<!--    <div class="chat-controls">-->
+<!--      <mat-slide-toggle>Enable Notifications</mat-slide-toggle>-->
+<!--      <mat-form-field>-->
+<!--        <mat-label>Choose AI</mat-label>-->
+<!--        <mat-select [(ngModel)]="selectedAI">-->
+<!--          <mat-option value="gpt-4">GPT-4</mat-option>-->
+<!--          <mat-option value="gpt-3.5">GPT-3.5</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
     <ng-container *ngFor="let message of chatMessages; let i = index">
       <div *ngIf="message.role === 'assistant'" class="message assistant-message">
         {{ message.content }}

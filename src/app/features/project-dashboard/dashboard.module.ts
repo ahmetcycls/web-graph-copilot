@@ -4,9 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
 
 // Corrected Angular Material module imports
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatSelectModule } from '@angular/material/select';
+// import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ProjectDashboardComponent } from './project-dashboard.component';
 import { ProjectListComponent } from '../project-list/project-list.component';
@@ -43,9 +43,9 @@ import { DynamicHostDirective } from "../../core/directives/dynamic-host.directi
     CommonModule,
     RouterModule,
     FormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatSlideToggleModule,
+    // MatFormFieldModule,
+    // MatSelectModule,
+    // MatSlideToggleModule,
   ],
   exports: [
     ProjectDashboardComponent,
