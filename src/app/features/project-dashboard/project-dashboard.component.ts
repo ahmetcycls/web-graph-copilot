@@ -1,7 +1,5 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DynamicHostDirective} from "../../core/directives/dynamic-host.directives";
-
 @Component({
   selector: 'app-project-dashboard',
   templateUrl: './project-dashboard.component.html',
@@ -11,13 +9,12 @@ import {DynamicHostDirective} from "../../core/directives/dynamic-host.directive
 
 export class ProjectDashboardComponent implements OnInit {
   @ViewChild(DynamicHostDirective, { static: true }) dynamicHost!: DynamicHostDirective;
-  projectNodeId: string;
-
-  constructor(private route: ActivatedRoute) { }
-  
+  @Input() projectNodeId = '';
+  // private route: ActivatedRoute
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.projectNodeId = params.get('projectNodeId');
-    });
+    console.log(this.projectNodeId)
+    // this.route.paramMap.subscribe(params => {
+    //   this.projectNodeId = params.get('projectNodeId');
+    // });
   }
 }

@@ -8,17 +8,23 @@ import {KeycloakService} from "keycloak-angular";
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  @Input() projectNodeId: string;
+  @Input() projectNodeId!: string;
   chatMessages: any[] = [];
   newMessage: string = '';
   isLoading: boolean = false; // Flag for loading indicator
+  graph_translation_for_AI: any[] = [];
+  selectedAI: string = 'gpt-3.5';
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
+
+  // ... (Other methods)
+
 
   constructor(private socket: Socket,private keycloakService: KeycloakService ) { }
 
   ngOnInit(): void {
     this.socket.on('ai_copilot_response', (data) => {
-      this.chatMessages = data.response;
+      this.chatMessages = data.response.chat;
+      this.graph_translation_for_AI = data.response.graph_translation
       this.isLoading = false;
 
     });
@@ -41,7 +47,8 @@ export class ChatComponent implements OnInit {
           input: messageContent,
           user_id: profile.id,
           project_node_id: this.projectNodeId,
-          history: this.chatMessages.slice(0, -1)
+          history: this.chatMessages.slice(0, -1),
+          graph_information: this.graph_translation_for_AI
         };
         console.log(payload);
         this.socket.emit('AI_copilot_message', payload);

@@ -1,0 +1,13 @@
+"unusedDependencies": {
+"angular/animations": "^15.2.10",
+"angular/cdk": "^17.3.1",
+"_@angular/forms": "^15.2.10",
+"_@angular/material": "^15.2.10",
+"_@angular/platform-browser": "^15.2.10",
+"_@angular/platform-browser-dynamic": "^15.2.10",
+"_@angular/router": "^15.2.10",
+"_keycloak-angular": "^15.2.1",
+"_keycloak-js": "^24.0.1",
+"_ngx-draggable": "^1.0.0",
+"_ngx-socket-io": "^4.6.1"
+},

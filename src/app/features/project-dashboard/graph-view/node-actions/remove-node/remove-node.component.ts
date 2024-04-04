@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Socket} from "ngx-socket-io";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-remove-node',
@@ -7,15 +8,18 @@ import {Socket} from "ngx-socket-io";
   styleUrls: ['./remove-node.component.css']
 })
 export class RemoveNodeComponent implements OnInit {
-  @Input() userId: string = "50"; // Assuming user_id might be static or passed from parent
+  userId: string; // Assuming user_id might be static or passed from parent
   @Input() projectNodeId: string | null = null; // ID of the current project
   @Input() nodeId: string | null = null; // ID of the parent node under which the nodes and its sub-nodes will be deleted
   @Input() parentNodeLabel: string | null = null; // Label of the parent node
   isVisible = true;
   @Input() actionType: string;
-  constructor(private socket: Socket) { }
+  constructor(private socket: Socket, private keycloakService: KeycloakService) { }
 
   ngOnInit(): void {
+    this.keycloakService.loadUserProfile().then(profile => {
+      this.userId = profile.id;
+    }).catch(err => console.error('Error loading user profile:', err));
   }
 
 
