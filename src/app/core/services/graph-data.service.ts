@@ -24,6 +24,7 @@ export class GraphDataService {
         project_node_id: projectNodeId,
         user_id: userDetails.id // Use the dynamically obtained user ID
       };
+
       console.log('payload', payload);
       return this.http.post<any>(this.apiUrl, payload);
     } catch (error) {

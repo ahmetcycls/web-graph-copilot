@@ -7,7 +7,7 @@ import { CreateProjectComponent } from "./features/project-list/create-project/c
 import {AuthGuard} from "./guard/auth.guard";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/projects', pathMatch: 'full' },
   { path: 'login', component: LoginComponent }, // Add the login route
   { path: 'projects', component: ProjectListComponent, canActivate: [AuthGuard] }, // Protect the project list route
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { bindToComponentInputs: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

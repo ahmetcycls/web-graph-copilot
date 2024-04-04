@@ -8,7 +8,7 @@ import {KeycloakService} from "keycloak-angular";
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  @Input() projectNodeId: string;
+  @Input() projectNodeId!: string;
   chatMessages: any[] = [];
   newMessage: string = '';
   isLoading: boolean = false; // Flag for loading indicator

@@ -25,7 +25,7 @@ interface DynamicComponentContext {
 export class GraphViewComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('graphContainer', { static: true }) graphContainer: ElementRef;
-  @Input() projectNodeId: string;
+  @Input() projectNodeId!: string;
   @ViewChild('dynamicInsertionPoint', { read: ViewContainerRef }) dynamicInsertionPoint: ViewContainerRef;
 
 
