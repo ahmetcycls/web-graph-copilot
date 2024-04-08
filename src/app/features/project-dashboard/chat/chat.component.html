@@ -1,25 +1,26 @@
-<!-- Chat Container -->
 <div class="chat-container" #chatContainer>
-  <div class="messages">
-<!--    <div class="chat-controls">-->
-<!--      <mat-slide-toggle>Enable Notifications</mat-slide-toggle>-->
-<!--      <mat-form-field>-->
-<!--        <mat-label>Choose AI</mat-label>-->
-<!--        <mat-select [(ngModel)]="selectedAI">-->
-<!--          <mat-option value="gpt-4">GPT-4</mat-option>-->
-<!--          <mat-option value="gpt-3.5">GPT-3.5</mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    </div>-->
+  <!-- Draggable header -->
+  <div class="chat-header" (mousedown)="startDrag($event)">Drag here</div>
+
+  <!-- Resize handles -->
+  <div class="resize-handle" (mousedown)="startResize($event, 'bottom-right')"></div>
+  <div class="resize-handle-top" (mousedown)="startResize($event, 'top')"></div>
+  <div class="resize-handle-left" (mousedown)="startResize($event, 'left')"></div>
+
+  <!-- Message area and input -->
+  <div>
+    ses
+  </div>
+  <div class="messages flex-grow overflow-y-auto p-2" #scrollMe>
     <ng-container *ngFor="let message of chatMessages; let i = index">
-      <div *ngIf="message.role === 'assistant'" class="message assistant-message">
+      <div *ngIf="(i !== 1 || message.role !== 'assistant') && message.role === 'assistant'" class="message mb-4 p-2 bg-indigo-100 rounded-md shadow">
         {{ message.content }}
       </div>
-      <div *ngIf="message.role === 'user'" class="message user-message">
+      <div *ngIf="message.role === 'user'" class="message mb-4 p-2 bg-blue-100 rounded-md shadow">
         {{ message.content }}
       </div>
     </ng-container>
+    <div *ngIf="isLoading" class="loading text-center p-2">Loading...</div>
   </div>
-  <div *ngIf="isLoading" class="loading">Loading...</div>
   <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." class="chat-input">
 </div>

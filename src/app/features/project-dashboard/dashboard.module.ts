@@ -20,6 +20,10 @@ import { AddNodeComponent } from './graph-view/node-actions/add-node/add-node.co
 import { RemoveNodeComponent } from './graph-view/node-actions/remove-node/remove-node.component';
 import { UpdateNodeComponent } from './graph-view/node-actions/update-node/update-node.component';
 import { DynamicHostDirective } from "../../core/directives/dynamic-host.directives";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {MatFormField} from "@angular/material/form-field";
+import {MatOption} from "@angular/material/autocomplete";
+import {MatSelect} from "@angular/material/select";
 
 
 @NgModule({
@@ -43,6 +47,10 @@ import { DynamicHostDirective } from "../../core/directives/dynamic-host.directi
     CommonModule,
     RouterModule,
     FormsModule,
+    MatSlideToggle,
+    MatFormField,
+    MatOption,
+    MatSelect,
     // MatFormFieldModule,
     // MatSelectModule,
     // MatSlideToggleModule,

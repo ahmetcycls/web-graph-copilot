@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import {KeycloakService} from "keycloak-angular";
+import { KeycloakService } from "keycloak-angular";
 
 @Component({
   selector: 'app-chat',
@@ -8,31 +8,132 @@ import {KeycloakService} from "keycloak-angular";
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  @Input() projectNodeId!: string;
+  @Input() projectNodeId: string;
   chatMessages: any[] = [];
   newMessage: string = '';
-  isLoading: boolean = false; // Flag for loading indicator
+  isLoading: boolean = false;
   graph_translation_for_AI: any[] = [];
   selectedAI: string = 'gpt-3.5';
+  brainstorming_mode: boolean = false;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('chatContainer') private chatContainer: ElementRef<HTMLDivElement>;
 
-  // ... (Other methods)
+  private isResizing = false;
+  private isDragging = false;
+  private startY = 0;
+  private startX = 0;
+  private startHeight = 0;
+  private startWidth = 0;
+  private dragStartX = 0;
+  private dragStartY = 0;
+  private originalTop = 0;
+  private originalLeft = 0;
+  private resizeDirection: 'bottom-right' | 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left';
 
+  private readonly MIN_WIDTH = 100; // Minimum width of chat container
+  private readonly MIN_HEIGHT = 100; // Minimum height of chat container
 
-  constructor(private socket: Socket,private keycloakService: KeycloakService ) { }
+  constructor(private socket: Socket, private keycloakService: KeycloakService) { }
 
   ngOnInit(): void {
     this.socket.on('ai_copilot_response', (data) => {
-      this.chatMessages = data.response.chat;
-      this.graph_translation_for_AI = data.response.graph_translation
+      console.log(data);
+      this.chatMessages = data.response;
+      this.graph_translation_for_AI = data.response.graph_translation;
       this.isLoading = false;
-
     });
   }
 
-
   ngAfterViewChecked(): void {
     this.scrollToBottom();
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (this.isDragging) {
+      const dx = event.clientX - this.dragStartX;
+      const dy = event.clientY - this.dragStartY;
+      let newTop = this.originalTop + dy;
+      let newLeft = this.originalLeft + dx;
+
+      // Get viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Get the current dimensions of the chat container
+      const chatRect = this.chatContainer.nativeElement.getBoundingClientRect();
+
+      // Calculate the boundaries to keep the chat container within the viewport
+      const leftBoundary = 0;
+      const topBoundary = 0;
+      const rightBoundary = viewportWidth - chatRect.width;
+      const bottomBoundary = viewportHeight - chatRect.height;
+
+      // Apply constraints
+      if (newLeft < leftBoundary) newLeft = leftBoundary;
+      if (newLeft > rightBoundary) newLeft = rightBoundary;
+      if (newTop < topBoundary) newTop = topBoundary;
+      if (newTop > bottomBoundary) newTop = bottomBoundary;
+
+      // Set the new position
+      this.chatContainer.nativeElement.style.left = `${newLeft}px`;
+      this.chatContainer.nativeElement.style.top = `${newTop}px`;
+    } else if (this.isResizing) {
+      const chatRect = this.chatContainer.nativeElement.getBoundingClientRect();
+      let newHeight, newWidth;
+
+      switch (this.resizeDirection) {
+        case 'bottom-right':
+          newHeight = event.clientY - chatRect.top;
+          newWidth = event.clientX - chatRect.left;
+          if (newWidth > this.MIN_WIDTH && newHeight > this.MIN_HEIGHT) {
+            this.chatContainer.nativeElement.style.width = `${newWidth}px`;
+            this.chatContainer.nativeElement.style.height = `${newHeight}px`;
+          }
+          break;
+        case 'top':
+          newHeight = this.startHeight - (event.clientY - this.startY);
+          if (newHeight > this.MIN_HEIGHT) {
+            this.chatContainer.nativeElement.style.height = `${newHeight}px`;
+            this.chatContainer.nativeElement.style.top = `${event.clientY}px`;
+          }
+          break;
+        case 'left':
+          newWidth = this.startWidth - (event.clientX - this.startX);
+          if (newWidth > this.MIN_WIDTH) {
+            this.chatContainer.nativeElement.style.width = `${newWidth}px`;
+            this.chatContainer.nativeElement.style.left = `${event.clientX}px`;
+          }
+          break;
+        // Add cases for other directions as needed
+      }
+    }
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(event: MouseEvent) {
+    this.isDragging = false;
+    this.isResizing = false;
+  }
+
+  startDrag(event: MouseEvent) {
+    this.isDragging = true;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
+    const rect = this.chatContainer.nativeElement.getBoundingClientRect();
+    this.originalTop = rect.top - window.scrollY;
+    this.originalLeft = rect.left - window.scrollX;
+    event.preventDefault();
+  }
+
+  startResize(event: MouseEvent, direction: 'bottom-right' | 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left') {
+    this.isResizing = true;
+    this.resizeDirection = direction;
+    this.startX = event.clientX;
+    this.startY = event.clientY;
+    this.startWidth = this.chatContainer.nativeElement.offsetWidth;
+    this.startHeight = this.chatContainer.nativeElement.offsetHeight;
+    event.preventDefault();
   }
 
   sendMessage(): void {
@@ -54,7 +155,6 @@ export class ChatComponent implements OnInit {
         this.socket.emit('AI_copilot_message', payload);
       }).catch(err => {
         console.error('Error loading user profile:', err);
-        // Handle the error case, e.g., show an error message or use a default user_id
       });
     }
   }
@@ -62,6 +162,6 @@ export class ChatComponent implements OnInit {
   private scrollToBottom(): void {
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+    } catch (err) { }
   }
 }
