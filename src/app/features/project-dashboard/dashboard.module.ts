@@ -24,6 +24,7 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatFormField} from "@angular/material/form-field";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
+import {MatIcon} from "@angular/material/icon";
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import {MatSelect} from "@angular/material/select";
     MatFormField,
     MatOption,
     MatSelect,
+    MatIcon,
     // MatFormFieldModule,
     // MatSelectModule,
     // MatSlideToggleModule,

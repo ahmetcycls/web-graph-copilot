@@ -1,12 +1,13 @@
 <div class="chat-container" #chatContainer>
   <!-- Draggable header -->
-  <div class="chat-header" (mousedown)="startDrag($event)">Drag here</div>
-  <!-- Resize handles -->
+  <div class="chat-header" (mousedown)="startDrag($event)"><mat-icon>drag_handle</mat-icon></div>  <!-- Resize handles -->
   <div class="resize-handle" (mousedown)="startResize($event, 'bottom-right')"></div>
   <div class="resize-handle-top" (mousedown)="startResize($event, 'top')"></div>
   <div class="resize-handle-left" (mousedown)="startResize($event, 'left')"></div>
 <!--  <button class="settings-btn" (click)="toggleSettings()">Settings</button>-->
-
+  <button mat-fab extended>
+    <mat-icon>settings</mat-icon>
+  </button>
   <!-- Message area and input -->
 
   <div class="messages flex-grow overflow-y-auto p-2" #scrollMe>
