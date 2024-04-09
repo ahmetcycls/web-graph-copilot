@@ -44,7 +44,7 @@ export class AddNodeComponent implements OnInit {
         user_id: this.userId,
         project_node_id: this.projectNodeId,
         parent_node_id: this.nodeId,
-        task_details: [{
+        subnodes: [{
           label: this.nodeName.trim(),
           title: this.nodeName.trim(),
           description: this.nodeDescription.trim(),

@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   isLoading: boolean = false;
   graph_translation_for_AI: any[] = [];
-  selectedAI: string = 'gpt-3.5';
+  selectedAI: any[] = ['gpt-3.5', 'GPT-4-1104'];
   brainstorming_mode: boolean = false;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
   @ViewChild('chatContainer') private chatContainer: ElementRef<HTMLDivElement>;
@@ -115,6 +115,8 @@ export class ChatComponent implements OnInit {
     this.isDragging = false;
     this.isResizing = false;
   }
+
+  toggleSettings(){}
 
   startDrag(event: MouseEvent) {
     this.isDragging = true;
