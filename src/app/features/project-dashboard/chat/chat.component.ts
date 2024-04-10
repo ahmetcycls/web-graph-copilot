@@ -1,6 +1,7 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnInit, Type, ViewChild, ViewContainerRef} from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { KeycloakService } from "keycloak-angular";
+import {ChatSettingsComponent} from "./chat-settings/chat-settings.component";
 
 @Component({
   selector: 'app-chat',
@@ -13,8 +14,7 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   isLoading: boolean = false;
   graph_translation_for_AI: any[] = [];
-  selectedAI: any[] = ['gpt-3.5', 'GPT-4-1104'];
-  brainstorming_mode: boolean = false;
+  isSettingsVisible = false;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef<HTMLDivElement>;
   @ViewChild('chatContainer') private chatContainer: ElementRef<HTMLDivElement>;
 
@@ -32,9 +32,20 @@ export class ChatComponent implements OnInit {
 
   private readonly MIN_WIDTH = 100; // Minimum width of chat container
   private readonly MIN_HEIGHT = 100; // Minimum height of chat container
-
+  selectedAI: any[] = ['gpt-3.5', 'GPT-4-1104'];
+  brainstorming_mode: boolean = false;
   constructor(private socket: Socket, private keycloakService: KeycloakService) { }
+  @ViewChild('dynamicInsertionPoint', { read: ViewContainerRef }) dynamicInsertionPoint: ViewContainerRef;
 
+  toggleSettings(){
+    const componentRef = this.dynamicInsertionPoint.createComponent(ChatSettingsComponent);
+    const instance: ChatSettingsComponent = componentRef.instance;
+    instance.isVisible = true;
+  }
+  updateSettings(settings: { selectedModel: string; brainstormingMode: boolean }) {
+    this.selectedAI = [settings.selectedModel]; // Update based on your logic, may need adjustments
+    this.brainstorming_mode = settings.brainstormingMode;
+  }
   ngOnInit(): void {
     this.socket.on('ai_copilot_response', (data) => {
       console.log(data);
@@ -44,8 +55,39 @@ export class ChatComponent implements OnInit {
     });
   }
 
+
   ngAfterViewChecked(): void {
     this.scrollToBottom();
+  }
+
+
+  sendMessage(): void {
+    if (this.newMessage.trim()) {
+      const messageContent = this.newMessage.trim();
+      this.newMessage = '';
+      this.isLoading = true;
+      this.chatMessages.push({ role: 'user', content: messageContent });
+
+      this.keycloakService.loadUserProfile().then(profile => {
+        const payload = {
+          input: messageContent,
+          user_id: profile.id,
+          project_node_id: this.projectNodeId,
+          history: this.chatMessages.slice(0, -1),
+          graph_information: this.graph_translation_for_AI
+        };
+        console.log(payload);
+        this.socket.emit('AI_copilot_message', payload);
+      }).catch(err => {
+        console.error('Error loading user profile:', err);
+      });
+    }
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) { }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -116,7 +158,7 @@ export class ChatComponent implements OnInit {
     this.isResizing = false;
   }
 
-  toggleSettings(){}
+
 
   startDrag(event: MouseEvent) {
     this.isDragging = true;
@@ -138,32 +180,4 @@ export class ChatComponent implements OnInit {
     event.preventDefault();
   }
 
-  sendMessage(): void {
-    if (this.newMessage.trim()) {
-      const messageContent = this.newMessage.trim();
-      this.newMessage = '';
-      this.isLoading = true;
-      this.chatMessages.push({ role: 'user', content: messageContent });
-
-      this.keycloakService.loadUserProfile().then(profile => {
-        const payload = {
-          input: messageContent,
-          user_id: profile.id,
-          project_node_id: this.projectNodeId,
-          history: this.chatMessages.slice(0, -1),
-          graph_information: this.graph_translation_for_AI
-        };
-        console.log(payload);
-        this.socket.emit('AI_copilot_message', payload);
-      }).catch(err => {
-        console.error('Error loading user profile:', err);
-      });
-    }
-  }
-
-  private scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch (err) { }
-  }
 }

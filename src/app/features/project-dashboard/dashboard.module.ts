@@ -21,10 +21,12 @@ import { RemoveNodeComponent } from './graph-view/node-actions/remove-node/remov
 import { UpdateNodeComponent } from './graph-view/node-actions/update-node/update-node.component';
 import { DynamicHostDirective } from "../../core/directives/dynamic-host.directives";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
+import {MatFabButton} from "@angular/material/button";
+import {ChatSettingsComponent} from "./chat/chat-settings/chat-settings.component";
 
 
 @NgModule({
@@ -41,7 +43,7 @@ import {MatIcon} from "@angular/material/icon";
     AddNodeComponent,
     RemoveNodeComponent,
     UpdateNodeComponent,
-
+    ChatSettingsComponent
 
   ],
   imports: [
@@ -50,9 +52,11 @@ import {MatIcon} from "@angular/material/icon";
     FormsModule,
     MatSlideToggle,
     MatFormField,
+    MatLabel,
     MatOption,
     MatSelect,
     MatIcon,
+    MatFabButton,
     // MatFormFieldModule,
     // MatSelectModule,
     // MatSlideToggleModule,

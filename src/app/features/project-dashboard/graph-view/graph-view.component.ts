@@ -30,7 +30,7 @@ export class GraphViewComponent implements OnInit, OnDestroy {
 
 
   contextMenuPosition = { x: 0, y: 0 };
-    showContextMenu = false;
+  showContextMenu = false;
   selectedNodeId: string | null = null;
 
   nodes: DataSet<Node> = new DataSet([]);
@@ -40,7 +40,46 @@ export class GraphViewComponent implements OnInit, OnDestroy {
   constructor(private graphDataService: GraphDataService,
               private nodeDetailService: NodeDetailService, private socket: Socket
   ) {}
+  onContextMenuActionSelect(event: {action: string, nodeId: string | null}) {
+    console.log("Action   selected:", event.action, "for nodeId:", event.nodeId);
+    // Example: Dynamically loading AddNodeComponent
+    const nodeData = this.nodes.get(event.nodeId);
+    const nodeLabel = nodeData ? nodeData.label : 'No Label';
+    const context: DynamicComponentContext = {
+      nodeId: event.nodeId,
+      projectNodeId: this.projectNodeId,
+      nodeLabel: nodeLabel,
+      action: event.action // Include the action here
+    };
+    let component: Type<any>;
+    switch(event.action) {
+      case 'addNode':
+        component = AddNodeComponent;
+        break;
+      case 'deleteNodeAndSubNodes':
+      case 'deleteSubNodes':
+        component = RemoveNodeComponent;
+        break;
+      default:
+        console.error('Unknown action:', event.action);
+        return;
+    }
 
+    this.loadDynamicComponent(component, context);
+  }
+  private loadDynamicComponent(component: Type<any>, context: DynamicComponentContext) {
+    const componentRef = this.dynamicInsertionPoint.createComponent(component);
+    const instance = componentRef.instance;
+
+    instance.nodeId = context.nodeId;
+    instance.isVisible = true; // Make sure the component is visible
+    instance.projectNodeId = context.projectNodeId;
+    instance.parentNodeLabel = context.nodeLabel;
+
+    if (instance instanceof RemoveNodeComponent && context.action) {
+      instance.actionType = context.action;
+    }
+  }
   ngOnInit(): void {
     this.fetchAndInitializeGraph();
     this.socket.on('graph_update', (data) => {
@@ -134,14 +173,9 @@ export class GraphViewComponent implements OnInit, OnDestroy {
 
   }
 
-
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (this.showContextMenu) {
-      // Logic to check if the click is outside the context menu
-      // This might require accessing the contextMenuComponent's DOM element to check if the click is outside
-      // For simplicity, toggle the visibility off for now
       this.showContextMenu = false;
     }
   }
@@ -168,45 +202,4 @@ export class GraphViewComponent implements OnInit, OnDestroy {
   }
 
 
-  onContextMenuActionSelect(event: {action: string, nodeId: string | null}) {
-    console.log("Action   selected:", event.action, "for nodeId:", event.nodeId);
-    // Example: Dynamically loading AddNodeComponent
-    const nodeData = this.nodes.get(event.nodeId);
-    const nodeLabel = nodeData ? nodeData.label : 'No Label';
-    const context: DynamicComponentContext = {
-      nodeId: event.nodeId,
-      projectNodeId: this.projectNodeId,
-      nodeLabel: nodeLabel,
-      action: event.action // Include the action here
-    };
-    let component: Type<any>;
-    switch(event.action) {
-      case 'addNode':
-        component = AddNodeComponent;
-        break;
-      case 'deleteNodeAndSubNodes':
-      case 'deleteSubNodes':
-        component = RemoveNodeComponent;
-        break;
-      default:
-        console.error('Unknown action:', event.action);
-        return;
-    }
-
-    this.loadDynamicComponent(component, context);
-  }
-  private loadDynamicComponent(component: Type<any>, context: DynamicComponentContext) {
-    const componentRef = this.dynamicInsertionPoint.createComponent(component);
-    const instance = componentRef.instance;
-
-    instance.nodeId = context.nodeId;
-    instance.isVisible = true; // Make sure the component is visible
-    instance.projectNodeId = context.projectNodeId;
-    instance.parentNodeLabel = context.nodeLabel;
-
-    if (instance instanceof RemoveNodeComponent && context.action) {
-      instance.actionType = context.action;
-    }
-    // Listen to component's events if needed, or perform additional setup
-  }
 }

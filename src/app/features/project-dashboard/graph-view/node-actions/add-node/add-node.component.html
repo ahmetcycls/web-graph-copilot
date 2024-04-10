@@ -14,6 +14,13 @@
       <label for="nodeDescription" class="block text-sm font-medium text-gray-700">Description:</label>
       <textarea id="nodeDescription" [(ngModel)]="nodeDescription" rows="3" placeholder="Enter node description" class="mt-1 p-2 w-full border rounded-md"></textarea>
     </div>
+
+    <div class="flex justify-end space-x-2">
+      <button type="button" (click)="addNode()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Add Node</button>
+      <button type="button" (click)="cancel()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancel</button>
+    </div>
+  </div>
+</div>
 <!--    <div>-->
 <!--      <label for="assignedTo" class="block text-sm font-medium text-gray-700">Assigned To:</label>-->
 <!--      <input type="text" id="assignedTo" [(ngModel)]="assignedTo" placeholder="Enter assignee" class="mt-1 p-2 w-full border rounded-md">-->
@@ -30,9 +37,3 @@
 <!--      <label for="skills" class="block text-sm font-medium text-gray-700">Skills:</label>-->
 <!--      <input type="text" id="skills" [(ngModel)]="skillInput" placeholder="Enter skills comma-separated (e.g., JavaScript,OAuth)" class="mt-1 p-2 w-full border rounded-md">-->
 <!--    </div>-->
-    <div class="flex justify-end space-x-2">
-      <button type="button" (click)="addNode()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Add Node</button>
-      <button type="button" (click)="cancel()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancel</button>
-    </div>
-  </div>
-</div>

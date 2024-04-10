@@ -5,7 +5,7 @@
   <div class="resize-handle-top" (mousedown)="startResize($event, 'top')"></div>
   <div class="resize-handle-left" (mousedown)="startResize($event, 'left')"></div>
 <!--  <button class="settings-btn" (click)="toggleSettings()">Settings</button>-->
-  <button mat-fab extended>
+  <button mat-fab extended (click)="toggleSettings()">
     <mat-icon>settings</mat-icon>
   </button>
   <!-- Message area and input -->
@@ -23,3 +23,5 @@
   </div>
   <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." class="chat-input">
 </div>
+<div #dynamicInsertionPoint></div>
+<app-chat-settings [isVisible]="isSettingsVisible" (settingsChanged)="updateSettings($event)"></app-chat-settings>
