@@ -12,7 +12,6 @@
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Ensure it's above other components */
 }
 
 /* Draggable header style */
